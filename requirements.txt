@@ -1,0 +1,19 @@
+# Phần 1 — Indexer (chạy trên Colab/GPU)
+# Với GPU: thay onnxruntime → onnxruntime-gpu, paddlepaddle → paddlepaddle-gpu.
+# KHÔNG dùng faiss-gpu: PyPI faiss-gpu không có wheel cho Python 3.11+; faiss-cpu vẫn rất
+# nhanh cho IndexFlatIP và không phải là bottleneck (bottleneck là insightface + paddleocr).
+
+insightface==0.7.3
+onnxruntime==1.18.1          # GPU: onnxruntime-gpu==1.18.1
+faiss-cpu==1.8.0
+paddleocr==2.7.3
+paddlepaddle==2.6.1         # GPU: paddlepaddle-gpu==2.6.1
+ultralytics==8.2.0         # YOLOv8 phát hiện vùng BIB
+opencv-python-headless==4.10.0.84
+numpy==1.26.4
+pandas==2.2.2
+pyarrow==16.1.0
+google-api-python-client==2.134.0
+google-auth==2.30.0
+python-dotenv==1.0.1
+tqdm==4.66.4
