@@ -13,6 +13,7 @@ Hai chế độ:
 from __future__ import annotations
 
 import numpy as np
+import torch
 from ultralytics import YOLO
 
 _PERSON_CLASS = 0  # class "person" trong COCO
@@ -22,6 +23,24 @@ _TORSO_TOP = 0.25
 _TORSO_BOTTOM = 0.75
 
 
+def _patch_torch_load_for_yolo() -> None:
+    """PyTorch >= 2.6 đặt `weights_only=True` mặc định, chặn load YOLO .pt.
+
+    Weight `yolov8n.pt` (ultralytics chính thức) và file `.pt` user tự train
+    đều là nguồn tin cậy → đổi default về False để YOLO load được. Idempotent.
+    """
+    if getattr(torch.load, "_patched_for_yolo", False):
+        return
+    _orig = torch.load
+
+    def _load(*args, **kwargs):  # type: ignore[no-untyped-def]
+        kwargs.setdefault("weights_only", False)
+        return _orig(*args, **kwargs)
+
+    _load._patched_for_yolo = True  # type: ignore[attr-defined]
+    torch.load = _load  # type: ignore[assignment]
+
+
 class BibRegionDetector:
     def __init__(
         self,
@@ -29,6 +48,7 @@ class BibRegionDetector:
         conf: float = 0.25,
         is_custom: bool = False,
     ) -> None:
+        _patch_torch_load_for_yolo()
         self._model = YOLO(weights)
         self._conf = conf
         self._is_custom = is_custom
