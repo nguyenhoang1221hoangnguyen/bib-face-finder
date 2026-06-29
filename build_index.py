@@ -87,7 +87,7 @@ def build_index(
 
     for image in tqdm(images, desc="Xử lý ảnh", unit="ảnh"):
         try:
-            faces, bibs = _process_one(image, drive, face_engine, bib_engine)
+            faces, bibs, img_w, img_h = _process_one(image, drive, face_engine, bib_engine)
         except Exception as exc:  # bỏ qua ảnh lỗi, không dừng cả pipeline
             failed += 1
             tqdm.write(f"[Lỗi] {image.name} ({image.file_id}): {exc}")
@@ -113,8 +113,8 @@ def build_index(
                 "download_url": image.download_url,
                 "num_faces": len(faces),
                 "bib_numbers": bibs,
-                "img_width": img_bgr.shape[1],
-                "img_height": img_bgr.shape[0],
+                "img_width": img_w,
+                "img_height": img_h,
             }
         )
         for bib in bibs:
