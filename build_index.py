@@ -170,6 +170,8 @@ def _write_outputs(
             "download_url",
             "num_faces",
             "bib_numbers",
+            "img_width",
+            "img_height",
         ],
     ).to_parquet(output_dir / "images.parquet", index=False)
 
