@@ -113,6 +113,8 @@ def build_index(
                 "download_url": image.download_url,
                 "num_faces": len(faces),
                 "bib_numbers": bibs,
+                "img_width": img_bgr.shape[1],
+                "img_height": img_bgr.shape[0],
             }
         )
         for bib in bibs:
