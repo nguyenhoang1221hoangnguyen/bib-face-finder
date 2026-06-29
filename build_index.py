@@ -140,7 +140,8 @@ def _process_one(
         raise ValueError("không giải mã được ảnh")
     faces = face_engine.extract(img_bgr)
     bibs = bib_engine.read_bibs(img_bgr) if bib_engine is not None else []
-    return faces, bibs
+    img_h, img_w = img_bgr.shape[:2]
+    return faces, bibs, img_w, img_h
 
 
 def _write_outputs(
