@@ -118,7 +118,8 @@ def build_index(
             }
         )
         for bib in bibs:
-            bib_lookup.setdefault(bib, []).append(image.file_id)
+            key = bib.lstrip("0") or bib
+            bib_lookup.setdefault(key, []).append(image.file_id)
 
     _write_outputs(output_dir, embeddings, face_rows, image_rows, bib_lookup)
     print(
